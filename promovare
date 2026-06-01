@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Restaurantul Meu</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #111; color: #fff; line-height: 1.6; }
+    header { min-height: 85vh; background: linear-gradient(rgba(0,0,0,.65), rgba(0,0,0,.65)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=80') center/cover; display: flex; align-items: center; justify-content: center; text-align: center; padding: 30px; }
+    header h1 { font-size: clamp(42px, 7vw, 86px); margin-bottom: 15px; }
+    header p { font-size: 22px; max-width: 700px; margin: auto; }
+    .btn { display: inline-block; margin-top: 25px; padding: 14px 28px; background: #e63946; color: white; border-radius: 999px; text-decoration: none; font-weight: bold; transition: .2s; border: none; cursor: pointer; }
+    .btn:hover { transform: scale(1.05); background: #ff4d5a; }
+    nav { position: sticky; top: 0; z-index: 10; background: rgba(0,0,0,.9); padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
+    nav a, nav button { color: white; margin-left: 16px; text-decoration: none; background: none; border: none; cursor: pointer; font-size: 15px; }
+    section { padding: 70px 8%; }
+    .title { font-size: 38px; margin-bottom: 25px; text-align: center; }
+    .about { max-width: 900px; margin: auto; text-align: center; color: #ddd; font-size: 18px; }
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 22px; margin-top: 30px; }
+    .card { background: #1b1b1b; border: 1px solid #333; border-radius: 20px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+    .card h3 { color: #ffd166; margin-bottom: 8px; }
+    .price { color: #e63946; font-size: 22px; font-weight: bold; margin-top: 12px; }
+    .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+    .gallery img { width: 100%; height: 230px; object-fit: cover; border-radius: 18px; }
+    .contact { background: #181818; text-align: center; }
+    footer { padding: 22px; text-align: center; background: #000; color: #aaa; }
+    .admin-panel { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.92); z-index: 99; overflow: auto; padding: 30px; }
+    .admin-box { max-width: 750px; margin: auto; background: #1d1d1d; border-radius: 20px; padding: 25px; border: 1px solid #444; }
+    label { display: block; margin-top: 15px; color: #ddd; }
+    input, textarea { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #555; background: #111; color: white; margin-top: 6px; }
+    textarea { min-height: 90px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .small { color: #aaa; font-size: 13px; margin-top: 8px; }
+    @media (max-width: 650px) { nav { flex-direction: column; gap: 10px; } .row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <strong id="navName">Restaurantul Meu</strong>
+    <div>
+      <a href="#despre">Despre</a>
+      <a href="#meniu">Meniu</a>
+      <a href="#contact">Contact</a>
+      <button onclick="openAdmin()">Admin</button>
+    </div>
+  </nav>
+
+  <header>
+    <div>
+      <h1 id="heroTitle">Restaurantul Meu</h1>
+      <p id="heroSubtitle">Mâncare delicioasă, atmosferă premium și servicii excelente.</p>
+      <a class="btn" href="#contact">Rezervă o masă</a>
+    </div>
+  </header>
+
+  <section id="despre">
+    <h2 class="title">Despre noi</h2>
+    <p class="about" id="aboutText">Suntem un restaurant modern care combină gustul autentic cu o experiență elegantă. Perfect pentru cină, aniversări sau ieșiri cu prietenii.</p>
+  </section>
+
+  <section id="meniu">
+    <h2 class="title">Meniul zilei</h2>
+    <div class="menu-grid" id="menuGrid"></div>
+  </section>
+
+  <section>
+    <h2 class="title">Galerie</h2>
+    <div class="gallery">
+      <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=900&q=80" alt="Restaurant" />
+      <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=900&q=80" alt="Mâncare" />
+      <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=900&q=80" alt="Bucătărie" />
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <h2 class="title">Contact & Rezervări</h2>
+    <p id="phoneText">Telefon: 07xx xxx xxx</p>
+    <p id="addressText">Adresă: Strada Principală nr. 10</p>
+    <p id="hoursText">Program: Luni - Duminică, 10:00 - 23:00</p>
+    <a class="btn" id="callButton" href="tel:0700000000">Sună acum</a>
+  </section>
+
+  <footer>
+    © <span id="year"></span> <span id="footerName">Restaurantul Meu</span>. Toate drepturile rezervate.
+  </footer>
+
+  <div class="admin-panel" id="adminPanel">
+    <div class="admin-box">
+      <h2>Panou Admin</h2>
+      <p class="small">Parola demo este <b>1234</b>. Pentru un site real, panoul trebuie conectat la un backend securizat.</p>
+
+      <label>Parolă admin</label>
+      <input id="password" type="password" placeholder="Introdu parola" />
+      <button class="btn" onclick="loginAdmin()">Intră</button>
+
+      <div id="editArea" style="display:none; margin-top:20px;">
+        <label>Nume restaurant</label>
+        <input id="editName" />
+
+        <label>Slogan</label>
+        <input id="editSubtitle" />
+
+        <label>Text despre restaurant</label>
+        <textarea id="editAbout"></textarea>
+
+        <div class="row">
+          <div><label>Telefon</label><input id="editPhone" /></div>
+          <div><label>Adresă</label><input id="editAddress" /></div>
+        </div>
+
+        <label>Program</label>
+        <input id="editHours" />
+
+        <h3 style="margin-top:25px;">Produse meniu</h3>
+        <p class="small">Scrie câte un produs pe linie: Nume | Descriere | Preț</p>
+        <textarea id="editMenu"></textarea>
+
+        <button class="btn" onclick="saveChanges()">Salvează modificările</button>
+        <button class="btn" style="background:#555" onclick="closeAdmin()">Închide</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const defaultData = {
+      name: 'Restaurantul Meu',
+      subtitle: 'Mâncare delicioasă, atmosferă premium și servicii excelente.',
+      about: 'Suntem un restaurant modern care combină gustul autentic cu o experiență elegantă. Perfect pentru cină, aniversări sau ieșiri cu prietenii.',
+      phone: '07xx xxx xxx',
+      address: 'Strada Principală nr. 10',
+      hours: 'Luni - Duminică, 10:00 - 23:00',
+      menu: [
+        ['Burger Special', 'Carne suculentă, cheddar, sosul casei și cartofi prăjiți.', '39 lei'],
+        ['Paste Carbonara', 'Paste cremoase cu bacon, parmezan și sos fin.', '35 lei'],
+        ['Pizza Diavola', 'Mozzarella, salam picant, sos de roșii și busuioc.', '42 lei'],
+        ['Lava Cake', 'Desert cald cu ciocolată și înghețată.', '24 lei']
+      ]
+    };
+
+    let data = JSON.parse(localStorage.getItem('restaurantData')) || defaultData;
+
+    function renderSite() {
+      document.title = data.name;
+      document.getElementById('navName').textContent = data.name;
+      document.getElementById('heroTitle').textContent = data.name;
+      document.getElementById('heroSubtitle').textContent = data.subtitle;
+      document.getElementById('aboutText').textContent = data.about;
+      document.getElementById('phoneText').textContent = 'Telefon: ' + data.phone;
+      document.getElementById('addressText').textContent = 'Adresă: ' + data.address;
+      document.getElementById('hoursText').textContent = 'Program: ' + data.hours;
+      document.getElementById('footerName').textContent = data.name;
+      document.getElementById('callButton').href = 'tel:' + data.phone.replaceAll(' ', '');
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      const grid = document.getElementById('menuGrid');
+      grid.innerHTML = '';
+      data.menu.forEach(item => {
+        grid.innerHTML += `<div class="card"><h3>${item[0]}</h3><p>${item[1]}</p><div class="price">${item[2]}</div></div>`;
+      });
+    }
+
+    function openAdmin() { document.getElementById('adminPanel').style.display = 'block'; }
+    function closeAdmin() { document.getElementById('adminPanel').style.display = 'none'; }
+
+    function loginAdmin() {
+      const pass = document.getElementById('password').value;
+      if (pass !== '1234') return alert('Parolă greșită!');
+      document.getElementById('editArea').style.display = 'block';
+      document.getElementById('editName').value = data.name;
+      document.getElementById('editSubtitle').value = data.subtitle;
+      document.getElementById('editAbout').value = data.about;
+      document.getElementById('editPhone').value = data.phone;
+      document.getElementById('editAddress').value = data.address;
+      document.getElementById('editHours').value = data.hours;
+      document.getElementById('editMenu').value = data.menu.map(i => i.join(' | ')).join('\n');
+    }
+
+    function saveChanges() {
+      data.name = document.getElementById('editName').value;
+      data.subtitle = document.getElementById('editSubtitle').value;
+      data.about = document.getElementById('editAbout').value;
+      data.phone = document.getElementById('editPhone').value;
+      data.address = document.getElementById('editAddress').value;
+      data.hours = document.getElementById('editHours').value;
+      data.menu = document.getElementById('editMenu').value.split('\n').filter(Boolean).map(line => {
+        const parts = line.split('|').map(x => x.trim());
+        return [parts[0] || 'Produs', parts[1] || 'Descriere', parts[2] || 'Preț'];
+      });
+      localStorage.setItem('restaurantData', JSON.stringify(data));
+      renderSite();
+      alert('Modificările au fost salvate pe acest browser!');
+    }
+
+    renderSite();
+  </script>
+</body>
+</html>
